@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         Branch branch = Branch.getInstance();
 
-        // Branch init
+        // Branch init callback
         branch.initSession(new Branch.BranchReferralInitListener() {
             @Override
             public void onInitFinished(JSONObject referringParams, BranchError error) {

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.gitstalker">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:name="io.branch.referral.BranchApp"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/octocat"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".Repositories"></activity>
+        <activity android:name=".UserActivity"></activity>
+        <activity android:name=".MainActivity"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                // branch uri scheme
+                <data android:scheme="gitstalker" android:host="open" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+        </activity>
+        <!-- Branch init -->
+        <meta-data android:name="io.branch.sdk.BranchKey" android:value="key_live_gj7fSCJQP65O2fNWEIYORepbBraXYaQg" />
+        <meta-data android:name="io.branch.sdk.BranchKey.test" android:value="secret_live_nfIQH0HA5Si0isXvbUtR5vjeRiDBWVip" />
+        <meta-data android:name="io.branch.sdk.TestMode" android:value="false" />
+        <!-- Set to true to use Branch_Test_Key (useful when simulating installs and/or switching between debug and production flavors) -->
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+    </application>
+
+</manifest>

@@ -1,0 +1,3 @@
+//build
+include ':app'
+rootProject.name = "Git Stalker"

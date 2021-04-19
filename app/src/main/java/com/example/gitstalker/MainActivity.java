@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 getUser();
+                // you can add LOGIN event here. 
             }
         });
 
@@ -59,11 +60,22 @@ public class MainActivity extends AppCompatActivity {
                     // params will be empty if no data found
                     // ... insert custom logic here ...
                     Log.i("BRANCH SDK", referringParams.toString());
+                    try {
+                        // get user name from branch link
+                        String userName = linkProperties.getString("userName");
+                        Intent intent = new Intent(MainActivity.this, UserActivity.class);
+                        intent.putExtra("STRING_I_NEED", userName);
+                        startActivity(intent);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 } else {
                     Log.i("BRANCH SDK", error.getMessage());
                 }
             }
         }, this.getIntent().getData(), this);
+        
+        // are you actually performing a search here??
         new BranchEvent("Search")
                 .addCustomDataProperty("Custom_Event_Property_Key11", "Custom_Event_Property_val11")
                 .addCustomDataProperty("Custom_Event_Property_Key22", "Custom_Event_Property_val22")

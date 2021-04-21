@@ -44,6 +44,11 @@ public class MainActivity extends AppCompatActivity {
                 getUser();
             }
         });
+        new BranchEvent("Search")
+                .addCustomDataProperty("Custom_Event_Property_Key11", "Custom_Event_Property_val11")
+                .addCustomDataProperty("Custom_Event_Property_Key22", "Custom_Event_Property_val22")
+                .setCustomerEventAlias("my_custom_alias")
+                .logEvent(MainActivity.this);
     }
 
     private void getUser() {
@@ -51,20 +56,19 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("STRING_I_NEED", inputUsername.getText().toString());
         startActivity(intent);
     }
-
-    @Override
-    public void onStart () {
+    @Override public void onStart() {
         super.onStart();
-        Branch branch = Branch.getInstance();
+        Branch.sessionBuilder(this).withCallback(branchReferralInitListener).withData(getIntent() != null ? getIntent().getData() : null).init();
+    }
 
-        Branch.BranchReferralInitListener branchReferralInitListener = new Branch.BranchReferralInitListener() {
+        private Branch.BranchReferralInitListener branchReferralInitListener = new Branch.BranchReferralInitListener() {
             @Override
             public void onInitFinished(JSONObject linkProperties, BranchError error) {
                 // do stuff with deep link data (nav to page, display content, etc)
                     try {
                         // get user name from branch link
                         String git_username = linkProperties.getString("git_username");
-                        Intent intent = new Intent(MainActivity.this, UserActivity.class);
+                        Intent intent = new Intent(MainActivity.this, Repositories.class);
                         intent.putExtra("STRING_I_NEED",git_username);
                         startActivity(intent);
                     } catch (JSONException e) {
@@ -72,12 +76,7 @@ public class MainActivity extends AppCompatActivity {
                     }
             }
         };
-        new BranchEvent("Search")
-                .addCustomDataProperty("Custom_Event_Property_Key11", "Custom_Event_Property_val11")
-                .addCustomDataProperty("Custom_Event_Property_Key22", "Custom_Event_Property_val22")
-                .setCustomerEventAlias("my_custom_alias")
-                .logEvent(MainActivity.this);
-    }
+
         @Override
         public void onNewIntent(Intent intent) {
             super.onNewIntent(intent);

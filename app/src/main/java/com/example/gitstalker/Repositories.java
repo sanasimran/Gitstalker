@@ -61,8 +61,8 @@ public class Repositories extends AppCompatActivity {
 
         BranchUniversalObject buo = new BranchUniversalObject()
                 .setCanonicalIdentifier("content/12345")
-                .setTitle("My Content Title")
-                .setContentDescription("My Content Description")
+                .setTitle("Check out my App")
+                .setContentDescription("Enter a username")
                 .setContentImageUrl("https://lorempixel.com/400/400")
                 .setContentIndexingMode(BranchUniversalObject.CONTENT_INDEX_MODE.PUBLIC)
                 .setLocalIndexMode(BranchUniversalObject.CONTENT_INDEX_MODE.PUBLIC)

@@ -6,11 +6,13 @@ import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Calendar;
@@ -34,49 +36,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        login = (Button)findViewById(R.id.login_github);
-        inputUsername = (EditText)findViewById(R.id.git_username);
+        login = (Button) findViewById(R.id.login_github);
+        inputUsername = (EditText) findViewById(R.id.git_username);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getUser();
             }
         });
-
-
-    }
-    @Override
-    public void onStart() {
-        super.onStart();
-        Branch branch = Branch.getInstance();
-
-        // Branch init
-        branch.initSession(new Branch.BranchReferralInitListener() {
-            @Override
-            public void onInitFinished(JSONObject referringParams, BranchError error) {
-                if (error == null) {
-                    // params are the deep linked params associated with the link that the user clicked -> was re-directed to this app
-                    // params will be empty if no data found
-                    // ... insert custom logic here ...
-                    Log.i("BRANCH SDK", referringParams.toString());
-                } else {
-                    Log.i("BRANCH SDK", error.getMessage());
-                }
-            }
-        }, this.getIntent().getData(), this);
-        new BranchEvent("Search")
-                .addCustomDataProperty("Custom_Event_Property_Key11", "Custom_Event_Property_val11")
-                .addCustomDataProperty("Custom_Event_Property_Key22", "Custom_Event_Property_val22")
-                .setCustomerEventAlias("my_custom_alias")
-                .logEvent(MainActivity.this);
-
-
-    }
-
-    @Override
-    public void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        this.setIntent(intent);
     }
 
     private void getUser() {
@@ -85,4 +52,35 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @Override
+    public void onStart () {
+        super.onStart();
+        Branch branch = Branch.getInstance();
+
+        Branch.BranchReferralInitListener branchReferralInitListener = new Branch.BranchReferralInitListener() {
+            @Override
+            public void onInitFinished(JSONObject linkProperties, BranchError error) {
+                // do stuff with deep link data (nav to page, display content, etc)
+                    try {
+                        // get user name from branch link
+                        String git_username = linkProperties.getString("git_username");
+                        Intent intent = new Intent(MainActivity.this, UserActivity.class);
+                        intent.putExtra("STRING_I_NEED",git_username);
+                        startActivity(intent);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+            }
+        };
+        new BranchEvent("Search")
+                .addCustomDataProperty("Custom_Event_Property_Key11", "Custom_Event_Property_val11")
+                .addCustomDataProperty("Custom_Event_Property_Key22", "Custom_Event_Property_val22")
+                .setCustomerEventAlias("my_custom_alias")
+                .logEvent(MainActivity.this);
+    }
+        @Override
+        public void onNewIntent(Intent intent) {
+            super.onNewIntent(intent);
+            this.setIntent(intent);
+    }
 }

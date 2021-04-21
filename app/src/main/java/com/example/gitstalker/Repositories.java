@@ -35,7 +35,7 @@ import retrofit2.Response;
 public class Repositories extends AppCompatActivity {
 
 
-    String recievedUserName;
+    String receivedUserName;
     TextView usernameTV;
     RecyclerView recyclerView;
     List<GitHubRepo> myDataSource = new ArrayList<>();
@@ -47,10 +47,10 @@ public class Repositories extends AppCompatActivity {
         setContentView(R.layout.activity_repositories);
 
         Bundle bundle = getIntent().getExtras();
-        recievedUserName = bundle.getString("username");
+        receivedUserName = bundle.getString("username");
 
         usernameTV = findViewById(R.id.userNameTV);
-        usernameTV.setText(recievedUserName);
+        usernameTV.setText(receivedUserName);
         recyclerView = findViewById(R.id.repos_recycler_view);
 
 
@@ -74,13 +74,17 @@ public class Repositories extends AppCompatActivity {
                 .setCampaign("RepoDeepLinkTest")
                 .setStage("new user")
                 .addControlParameter("$desktop_url", "http://example.com/home")
-                .addControlParameter("custom", "data")
+                .addControlParameter("username", "git_username")
                 .addControlParameter("custom_random", Long.toString(Calendar.getInstance().getTimeInMillis()));
         buo.generateShortUrl(this, lp, new Branch.BranchLinkCreateListener() {
             @Override
             public void onLinkCreate(String url, BranchError error) {
                 if (error == null) {
-                    Log.i("BRANCH SDK", "got my Branch link to share: " + url);
+
+                    Log.i("BRANCH SDK", "got my Branch link to share:sana: " + url);
+                }
+                else{
+                    Log.i("BRANCH SDK: error" ,error.getMessage());
                 }
             }
         });
@@ -107,16 +111,15 @@ public class Repositories extends AppCompatActivity {
             public void onChannelSelected(String channelName) {
             }
         });
+
     }
-
-
 
 
 
     private void loadRepositories() {
 
         GitHubUserEndPoints apiService = APIClient.getClient().create(GitHubUserEndPoints.class);
-        Call<List<GitHubRepo>> call = apiService.getRepo(recievedUserName);
+        Call<List<GitHubRepo>> call = apiService.getRepo(receivedUserName);
         call.enqueue(new Callback<List<GitHubRepo>>() {
             @Override
             public void onResponse(Call<List<GitHubRepo>> call, Response<List<GitHubRepo>> response) {

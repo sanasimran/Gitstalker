@@ -66,7 +66,7 @@ public class Repositories extends AppCompatActivity {
                 .setContentImageUrl("https://lorempixel.com/400/400")
                 .setContentIndexingMode(BranchUniversalObject.CONTENT_INDEX_MODE.PUBLIC)
                 .setLocalIndexMode(BranchUniversalObject.CONTENT_INDEX_MODE.PUBLIC)
-                .setContentMetadata(new ContentMetadata().addCustomMetadata("git_username",usernameTV.toString())
+                .setContentMetadata(new ContentMetadata().addCustomMetadata("git_username",receivedUserName)
         );
 
         LinkProperties lp = new LinkProperties()

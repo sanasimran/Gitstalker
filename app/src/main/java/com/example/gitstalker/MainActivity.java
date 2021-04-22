@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         // get user name from branch link
                         String git_username = linkProperties.getString("git_username");
-                        Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                        Intent intent = new Intent(MainActivity.this, UserActivity.class);
                         intent.putExtra("STRING_I_NEED",git_username);
                         startActivity(intent);
                     } catch (JSONException e) {

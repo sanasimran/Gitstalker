@@ -62,19 +62,18 @@ public class Repositories extends AppCompatActivity {
         BranchUniversalObject buo = new BranchUniversalObject()
                 .setCanonicalIdentifier("content/12345")
                 .setTitle("Check out my App")
-                .setContentDescription("Enter a username")
+                .setContentDescription("Branch Link")
                 .setContentImageUrl("https://lorempixel.com/400/400")
                 .setContentIndexingMode(BranchUniversalObject.CONTENT_INDEX_MODE.PUBLIC)
                 .setLocalIndexMode(BranchUniversalObject.CONTENT_INDEX_MODE.PUBLIC)
-                .setContentMetadata(new ContentMetadata().addCustomMetadata("key1", "value1"));
+                .setContentMetadata(new ContentMetadata().addCustomMetadata("git_username",usernameTV.toString())
+        );
 
         LinkProperties lp = new LinkProperties()
                 .setChannel("facebook")
                 .setFeature("sharing")
                 .setCampaign("RepoDeepLinkTest")
-                .setStage("new user")
                 .addControlParameter("$desktop_url", "http://example.com/home")
-                .addControlParameter("username", "git_username")
                 .addControlParameter("custom_random", Long.toString(Calendar.getInstance().getTimeInMillis()));
         buo.generateShortUrl(this, lp, new Branch.BranchLinkCreateListener() {
             @Override

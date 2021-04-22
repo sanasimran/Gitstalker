@@ -42,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 getUser();
+                new BranchEvent("User Login")
+                        .addCustomDataProperty("Custom_Event_Property_Key11", "Custom_Event_Property_val11")
+                        .logEvent(MainActivity.this);
             }
         });
         new BranchEvent("Search")
@@ -68,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         // get user name from branch link
                         String git_username = linkProperties.getString("git_username");
-                        Intent intent = new Intent(MainActivity.this, Repositories.class);
+                        Intent intent = new Intent(MainActivity.this, MainActivity.class);
                         intent.putExtra("STRING_I_NEED",git_username);
                         startActivity(intent);
                     } catch (JSONException e) {
@@ -81,5 +84,7 @@ public class MainActivity extends AppCompatActivity {
         public void onNewIntent(Intent intent) {
             super.onNewIntent(intent);
             this.setIntent(intent);
-    }
+            Branch.sessionBuilder(this).withCallback(branchReferralInitListener).reInit();
+
+        }
 }
